@@ -5,4 +5,10 @@ Application to store crowd funded documents on IPFS
 cd client && npm install
 
 # Buidler 
+this link has instructions for making sure your environment is set up properly so check out if commands dont work
 https://buidler.dev/tutorial/
+
+from root run:
+npm install && npx buidler test
+
+
