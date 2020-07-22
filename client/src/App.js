@@ -18,10 +18,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
 import HomePage from './views/homepage'
+import CreateDocStore from './views/createdocstore';
 // import { ethers } from "ethers";
 
 // //connect to in memory blockchain
@@ -63,9 +61,6 @@ function App() {
   const [info, setInfo] = useState()
   const classes = useStyles()
   const [createDocStore, setCreateDocStore] = useState(false)
-  const [activeStep, setActiveStep] = React.useState(0)
-  const [skipped, setSkipped] = React.useState(new Set())
-  const steps = getSteps()
 
   React.useEffect(() => {
     const windowProvider = async () => {
@@ -101,7 +96,7 @@ function App() {
   });
 
 
-  async function handleCreateToken() {
+  async function handleCreateToken(FFS) {
     // NOTE
     // Requires PowerGate to be running locally.
 
@@ -132,6 +127,7 @@ function App() {
   async function handleSend({ source, target, amount }) {
     console.log("Did this fire?")
     try {
+      console.log(source, target, amount)
       const response = await PowerGate.ffs.sendFil(
         source,
         target,
@@ -181,79 +177,7 @@ function App() {
       console.log(job);
     }, jobId);
   }
-  function getSteps() {
-    return ['Generate new Powergate Token', 'Create Filecoin Address', 'Optional: Send Filecoin', 'Make Storage Deal'];
-  }
 
-  function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return <div>
-          'Generate new Powergate Token'
-                <CreateToken
-            token={token}
-            onClick={handleCreateToken} />
-        </div>;
-      case 1:
-        return <div>
-          'Create Filecoin Address'
-        <CreateFilecoinAddress onSubmit={handleCreateAddress} />
-        </div>;
-      case 2:
-        return <div>
-          'Optional: Send Filecoin'
-        <SendAddressFilecoin onSubmit={handleSend} />
-        </div>;
-      case 3:
-        return <div>
-          'Make Storage Deal'
-        <CreateFilecoinStorageDeal onSubmit={handleSubmit} />
-        </div>;
-      default:
-        return 'Unknown step';
-    }
-  }
-  const isStepOptional = (step) => {
-    return step === 1;
-  };
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
 
   return (
@@ -271,6 +195,7 @@ function App() {
       </AppBar>
 
       <Switch>
+        <Route path="/createDocumentStore" render={props => <CreateDocStore {...props} info={info} refresh={refresh} handleCreateToken={handleCreateToken} handleCreateAddress={handleCreateAddress} token={token} handleSend={handleSend} handleSubmit={handleSubmit} />} />
         <Route path="/" render={props => <HomePage {...props} addr={addr} />} />
 
       </Switch>
