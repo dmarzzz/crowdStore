@@ -8,7 +8,7 @@ import {
   ButtonPrimary,
   CreateFilecoinStorageDeal
 } from 'slate-react-system';
-import { createPow } from "@textile/powergate-client";
+import { createPow, ffsOptions  } from "@textile/powergate-client";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -21,7 +21,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-
+import axios from 'axios';
 // import { ethers } from "ethers";
 
 // //connect to in memory blockchain
@@ -65,7 +65,9 @@ function App() {
   const [createDocStore, setCreateDocStore] = useState(false)
   const [activeStep, setActiveStep] = React.useState(0)
   const [skipped, setSkipped] = React.useState(new Set())
+  const [proposalCID, setProposalCID]= useState()
   const steps = getSteps()
+  
 
   React.useEffect(() => {
     const windowProvider = async () => {
@@ -179,7 +181,10 @@ function App() {
     const { jobId } = await PowerGate.ffs.pushConfig(cid);
     const cancel = PowerGate.ffs.watchJobs((job) => {
       console.log(job);
+      
     }, jobId);
+
+
   }
   function getSteps() {
     return ['Generate new Powergate Token', 'Create Filecoin Address', 'Optional: Send Filecoin', 'Make Storage Deal'];
@@ -254,6 +259,27 @@ function App() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  async function handleRefreshDealList() {
+    const includeFinal = ffsOptions.withIncludeFinal(true);
+    const includePending = ffsOptions.withIncludePending(true);
+    const storageList = await PowerGate.ffs.listStorageDealRecords(
+      includeFinal,
+      includePending,
+    );
+    console.log(storageList[0].dealInfo.proposalCid);
+    setProposalCID(storageList[0].dealInfo.proposalCid)
+    submitSpreadTxn(storageList[0].dealInfo.proposalCid)
+
+    // setStorageDealList(storageList);
+  }
+
+ //todo: put data in body
+ async function submitSpreadTxn(proposalCID){
+  const result = await axios.post(
+    'http://localhost:3000/test?proposalCID='+ proposalCID 
+  );
+}
 
 
   return (
@@ -357,6 +383,7 @@ function App() {
             <div style={{ 'color': '#000000', 'alignContent': 'center' }}>
               {info ? <FilecoinBalancesList data={info.balancesList} /> : null}
               <ButtonPrimary onClick={refresh}> Refresh </ButtonPrimary>
+              <ButtonPrimary onClick={handleRefreshDealList}> Refresh Deals</ButtonPrimary>
             </div>
           </header>
         </div>
