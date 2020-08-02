@@ -9,7 +9,7 @@ import {
   ButtonPrimary,
   CreateFilecoinStorageDeal
 } from 'slate-react-system';
-import { createPow, ffsOptions } from "@textile/powergate-client";
+import { createPow } from "@textile/powergate-client";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,9 +18,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import CreateDocStore from './views/createdocstore';
-
 import HomePage from './views/homepage'
+import CreateDocStore from './views/createdocstore';
 // import { ethers } from "ethers";
 
 // //connect to in memory blockchain
@@ -60,8 +59,6 @@ function App() {
   const [addr, setAddr] = useState()
   const [token, setToken] = useState()
   const [info, setInfo] = useState()
-  const [storageDealList, setStorageDealList] = useState([])
-
   const classes = useStyles()
   const [createDocStore, setCreateDocStore] = useState(false)
 
@@ -96,7 +93,7 @@ function App() {
     }
     windowProvider();
     powerInitialize();
-  }, []);
+  });
 
 
   async function handleCreateToken(FFS) {
@@ -179,22 +176,10 @@ function App() {
     const cancel = PowerGate.ffs.watchJobs((job) => {
       console.log(job);
     }, jobId);
-
-
   }
 
-  async function handleRefreshDealList() {
-    const includeFinal = ffsOptions.withIncludeFinal(true);
-    const includePending = ffsOptions.withIncludePending(true);
-    const storageList = await PowerGate.ffs.listStorageDealRecords(
-      includeFinal,
-      includePending,
-    );
-    console.log(storageList);
 
 
-    // setStorageDealList(storageList);
-  }
   return (
     <div className="App">
       <AppBar position="static">
@@ -210,7 +195,7 @@ function App() {
       </AppBar>
 
       <Switch>
-        <Route path="/createDocumentStore" render={props => <CreateDocStore {...props} info={info} refresh={refresh} handleCreateToken={handleCreateToken} handleCreateAddress={handleCreateAddress} token={token} handleSend={handleSend} handleSubmit={handleSubmit} handleRefreshDealList={handleRefreshDealList} storageDealList={storageDealList} />} />
+        <Route path="/createDocumentStore" render={props => <CreateDocStore {...props} info={info} refresh={refresh} handleCreateToken={handleCreateToken} handleCreateAddress={handleCreateAddress} token={token} handleSend={handleSend} handleSubmit={handleSubmit} />} />
         <Route path="/" render={props => <HomePage {...props} addr={addr} />} />
 
       </Switch>

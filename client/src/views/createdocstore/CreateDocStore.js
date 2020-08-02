@@ -5,9 +5,7 @@ import {
   CreateFilecoinAddress,
   SendAddressFilecoin,
   ButtonPrimary,
-  CreateFilecoinStorageDeal,
-  FilecoinStorageDealsList,
-
+  CreateFilecoinStorageDeal
 } from 'slate-react-system';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -40,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateDocStore = (props) => {
+const CreateDocStore = props => {
   const [activeStep, setActiveStep] = React.useState(0)
   const [skipped, setSkipped] = React.useState(new Set())
-  console.log(props)
+
   const steps = getSteps()
 
   const classes = useStyles()
@@ -57,10 +55,8 @@ const CreateDocStore = (props) => {
         return <div>
           'Generate new Powergate Token'
                 <CreateToken
-            onClick={props.handleCreateToken}
             token={props.token}
-          />
-
+            onClick={props.handleCreateToken} />
         </div>;
       case 1:
         return <div>
@@ -192,13 +188,6 @@ const CreateDocStore = (props) => {
           <ButtonPrimary onClick={props.refresh}> Refresh </ButtonPrimary>
         </div>
       </header>
-      <div style={{ 'color': '#000000', 'alignContent': 'center' }}>
-
-        {/*props.storageDealList.length !== 0 ? <FilecoinStorageDealsList data={props.storageDealList} /> : null*/}
-        <ButtonPrimary onClick={props.handleRefreshDealList}> Refresh Deals</ButtonPrimary>
-
-
-      </div>
     </div>);
 }
 
