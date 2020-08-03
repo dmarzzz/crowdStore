@@ -1,10 +1,10 @@
 
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.9;
+pragma solidity ^0.6.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
-import "@openzeppelin/contracts/drafts/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 
 contract Push is Ownable, ERC721 {
