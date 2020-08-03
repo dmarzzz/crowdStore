@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.9;
 
@@ -6,15 +7,13 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/drafts/Counters.sol";
 
 
-
-
-contract Push is Ownable, ERC721Full {
+contract Push is Ownable, ERC721 {
      using Counters for Counters.Counter;
      Counters.Counter private _id;
 
- constructor() ERC721Full("Push", "PSH") public {
+ constructor() ERC721("Push", "PSH") public {
  }
-    function mint(address to) public onlyOwner{
+    function mint(address to) public onlyOwner returns (uint256){
          _id.increment();
 
 
