@@ -19,17 +19,17 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const Token = await ethers.getContractFactory("Token");
-  const token = await Token.deploy();
-  await token.deployed();
+  const Push = await ethers.getContractFactory("Push");
+  const push = await Push.deploy();
+  await push.deployed();
 
-  console.log("Token address:", token.address);
+  console.log("Push address:", push.address);
 
   // We also save the contract's artifacts and address in the client directory
-  saveClientFiles(token);
+  saveClientFiles(push);
 }
 
-function saveClientFiles(token) {
+function saveClientFiles(push) {
   const fs = require("fs");
   const contractsDir = __dirname + "/../client/src/contracts";
 
@@ -39,12 +39,12 @@ function saveClientFiles(token) {
 
   fs.writeFileSync(
     contractsDir + "/contract-address.json",
-    JSON.stringify({ Token: token.address }, undefined, 2)
+    JSON.stringify({ push: push.address }, undefined, 2)
   );
 
   fs.copyFileSync(
-    __dirname + "/../artifacts/Token.json",
-    contractsDir + "/Token.json"
+    __dirname + "/../artifacts/Push.json",
+    contractsDir + "/Push.json"
   );
 }
 

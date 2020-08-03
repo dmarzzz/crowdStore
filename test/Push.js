@@ -15,9 +15,13 @@ describe("Push contract", function () {
     const mint2 = await PushToken.mint(owner.getAddress());
 
     const after = await PushToken.totalSupply();
+    
+  
 
     console.log("before : ", before);
     console.log("after : ", after);
+
+    console.log(PushToken)
 
   });
 });

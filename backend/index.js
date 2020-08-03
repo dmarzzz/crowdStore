@@ -26,12 +26,45 @@ const axios =  require('axios');
 // // on windows the path is: "\\\\.\\pipe\\geth.ipc"
 // // on linux the path is: "/users/myuser/.ethereum/geth.ipc"
 
-
-
-
-
 //Infura HttpProvider Endpoint
 web3js = new web3(new web3.providers.HttpProvider("http://localhost:8545"));
+
+
+web3js.eth.getBalance("0xc783df8a850f42e7f7e57013759c285caa701eb6", function(err, result) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(web3.utils.fromWei(result, "ether") + " ETH")
+    }
+  })
+
+
+  async function mintDocRep(){
+    const TokenArtifact = require("./contracts/Token.json");
+    const contractAddress = require("./contracts/contract-address.json");
+
+    var contract = new web3js.eth.Contract(TokenArtifact, contractAddress);
+    console.log(contract);
+
+  }
+
+  app.get('/testTxn', async function(req,res){
+    const PushArtifact = require("./contracts/Push.json");
+    const contractAddress = require("./contracts/contract-address.json");
+
+    var contract = new web3js.eth.Contract(PushArtifact.abi, contractAddress.push);
+    const result = await contract.methods.mint("0xc783df8a850f42e7f7e57013759c285caa701eb6").send({from:"0xc783df8a850f42e7f7e57013759c285caa701eb6"});
+    console.log(result);
+    try {
+        const result2 = await contract.methods.name().call({from:"0xc783df8a850f42e7f7e57013759c285caa701eb6"}); 
+        console.log(result2)
+    } catch (error) {
+        console.log(error)
+        
+    }
+    // 
+    // console.log(result2);
+  })
 
 app.get('/sendtx', function (req, res) {
 
@@ -80,6 +113,7 @@ app.post('/test', function (req, res) {
    axios.post('http://localhost:7777/rpc/v0', Data).then(function (response) {
     console.log(response);
   })
+  mintDocRep();
 
 });
 
