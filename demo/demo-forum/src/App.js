@@ -31,6 +31,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Web3 from 'web3';
+import PushArtifact from "./contracts/Push.json"
+import contractAddress from "./contracts/contract-address.json"
+
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -100,6 +105,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+var web3 = new Web3(Web3.givenProvider || 'http://localhost:8545');
+// var accounts = await web3.eth.getAccounts();
+var contract = new web3.eth.Contract( PushArtifact.abi , contractAddress.push );
+
+var pollDataInterval;
+function startPollingData(){
+  pollDataInterval = setInterval(() => updateBalance(),6000)
+  updateBalance();
+}
+
+
+async function updateBalance() {
+  var accounts = await web3.eth.getAccounts();
+  const balance = await contract.methods.balanceOf(accounts[0]).call({from :accounts[0]});
+  console.log(balance);
+}
+
+
 export default function App() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -117,6 +140,14 @@ export default function App() {
     name: 'User3 💯',
     coins: 1000
   }])
+
+
+  React.useEffect(() => {
+    startPollingData();
+  },[]);
+
+
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
