@@ -53,10 +53,13 @@ web3js.eth.getBalance("0xc783df8a850f42e7f7e57013759c285caa701eb6", function(err
     const contractAddress = require("./contracts/contract-address.json");
 
     var contract = new web3js.eth.Contract(PushArtifact.abi, contractAddress.push);
+
     const result = await contract.methods.mint("0xc783df8a850f42e7f7e57013759c285caa701eb6").send({from:"0xc783df8a850f42e7f7e57013759c285caa701eb6"});
+    
     console.log(result);
+
     try {
-        const result2 = await contract.methods.name().call({from:"0xc783df8a850f42e7f7e57013759c285caa701eb6"}); 
+        const result2 = await contract.methods;
         console.log(result2)
     } catch (error) {
         console.log(error)

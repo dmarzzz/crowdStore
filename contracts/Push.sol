@@ -31,8 +31,12 @@ contract Push is Ownable, ERC721 {
         
     }
 
-    function associateFiladdress(string memory  fil_addy) public {
+    function associateFiladdress(string memory fil_addy) public {
         addressbook[fil_addy] = msg.sender;
+    }
+
+    function getFiladdress(string calldata file_addy) external view returns (address){
+        return addressbook[file_addy];
     }
 
 }
