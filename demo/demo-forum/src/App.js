@@ -121,15 +121,15 @@ export default function App() {
   const [userAddress, setUserAddress] = React.useState('')
   const [userBalance, setUserBalance] = React.useState(0);
   const [userList, setUserList] = React.useState([{
-    name: 'User1 🔥',
+    name: 'U1 🔥',
     coins: 3000
   },
   {
-    name: 'User2 ⭐️',
+    name: 'U2 ⭐️',
     coins: 2000
   },
   {
-    name: 'User3 💯',
+    name: 'U3 💯',
     coins: 1000
   }])
 
@@ -545,7 +545,7 @@ export default function App() {
                   {userList.map((user, index) =>
                     <>
                       <Grid item xs={6}>
-                        <div>{index + 1}. {(user.name).substring(0, 42 - 34)} {index === 3 ? '😁' : null} :</div>
+                        <div>{index + 1}. {(user.name).substring(0, 42 - 35)}{index === 3 ? '...😁' : null} :</div>
                       </Grid>
                       <Grid item xs={6}>
                         <div>{user.coins} FIL💰</div>
