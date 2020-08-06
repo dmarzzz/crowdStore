@@ -105,22 +105,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-var web3 = new Web3(Web3.givenProvider || 'http://localhost:8545');
+var web3 = new Web3('http://127.0.0.1:7545');
 // var accounts = await web3.eth.getAccounts();
-var contract = new web3.eth.Contract( PushArtifact.abi , contractAddress.push );
+var contract = new web3.eth.Contract(PushArtifact.abi, contractAddress.push);
 
 var pollDataInterval;
-function startPollingData(){
-  pollDataInterval = setInterval(() => updateBalance(),6000)
-  updateBalance();
-}
 
-
-async function updateBalance() {
-  var accounts = await web3.eth.getAccounts();
-  const balance = await contract.methods.balanceOf(accounts[0]).call({from :accounts[0]});
-  console.log(balance);
-}
 
 
 export default function App() {
@@ -128,28 +118,61 @@ export default function App() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState(false);
-  const [userList, setuserList] = React.useState([{
-    name: 'User1 🔥',
+  const [userAddress, setUserAddress] = React.useState('')
+  const [userBalance, setUserBalance] = React.useState(0);
+  const [userList, setUserList] = React.useState([{
+    name: 'U1 🔥',
     coins: 3000
   },
   {
-    name: 'User2 ⭐️',
+    name: 'U2 ⭐️',
     coins: 2000
   },
   {
-    name: 'User3 💯',
+    name: 'U3 💯',
     coins: 1000
   }])
 
 
   React.useEffect(() => {
     startPollingData();
-  },[]);
+  }, []);
 
 
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  function startPollingData() {
+    pollDataInterval = setInterval(() => updateBalance(), 6000)
+    updateBalance();
+  }
+
+
+  async function updateBalance() {
+    var accounts = await web3.eth.getAccounts();
+    console.log(accounts);
+    setUserAddress(accounts[0]);
+    const results = await contract.methods.balanceOf(accounts[0]).call({ from: accounts[0] });
+    setUserBalance(results);
+    let user = userList.find(o => (o.name === accounts[0]))
+    console.log(user);
+    if (user === undefined) {
+      const newList = userList;
+
+      newList.push({ name: accounts[0], coins: results });
+      setUserList([...newList]);
+    }
+    else {
+      const newList = userList;
+      let objIndex = newList.findIndex((obj => obj.name == accounts[0]));
+      newList[objIndex].coins = results;
+      setUserList([...newList]);
+
+    }
+    console.log(results);
+    console.log(userList);
+  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -522,10 +545,10 @@ export default function App() {
                   {userList.map((user, index) =>
                     <>
                       <Grid item xs={6}>
-                        {index + 1}. {user.name}
+                        <div>{index + 1}. {(user.name).substring(0, 42 - 35)}{index === 3 ? '...😁' : null} :</div>
                       </Grid>
                       <Grid item xs={6}>
-                        {user.coins} FIL💰
+                        <div>{user.coins} FIL💰</div>
                       </Grid>
                     </>
                   )}
