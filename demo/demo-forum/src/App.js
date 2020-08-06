@@ -34,7 +34,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Web3 from 'web3';
 import PushArtifact from "./contracts/Push.json"
 import contractAddress from "./contracts/contract-address.json"
-
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-var web3 = new Web3('http://127.0.0.1:7545');
+var web3 = new Web3('http://127.0.0.1:8545');
 // var accounts = await web3.eth.getAccounts();
 var contract = new web3.eth.Contract(PushArtifact.abi, contractAddress.push);
 
@@ -152,20 +152,20 @@ export default function App() {
   async function updateBalance() {
     var accounts = await web3.eth.getAccounts();
     console.log(accounts);
-    setUserAddress(accounts[0]);
-    const results = await contract.methods.balanceOf(accounts[0]).call({ from: accounts[0] });
+    setUserAddress(accounts[19]);
+    const results = await contract.methods.balanceOf(accounts[19]).call({ from: accounts[19] });
     setUserBalance(results);
-    let user = userList.find(o => (o.name === accounts[0]))
+    let user = userList.find(o => (o.name === accounts[19]))
     console.log(user);
     if (user === undefined) {
       const newList = userList;
 
-      newList.push({ name: accounts[0], coins: results });
+      newList.push({ name: accounts[19], coins: results });
       setUserList([...newList]);
     }
     else {
       const newList = userList;
-      let objIndex = newList.findIndex((obj => obj.name == accounts[0]));
+      let objIndex = newList.findIndex((obj => obj.name == accounts[19]));
       newList[objIndex].coins = results;
       setUserList([...newList]);
 
@@ -253,10 +253,10 @@ export default function App() {
 
   return (
     <div style={{
-      backgroundColor: '#86BBD8'
+      backgroundColor: '#11BAA7',height:'100vmin'
     }}>
       <div className={classes.grow}>
-        <AppBar position="static" style={{ background: "#F6AE2D", color: 'white' }}>
+        <AppBar position="static" style={{ background: "#080808", color: 'white' }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -267,7 +267,7 @@ export default function App() {
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              Decentraforum
+              Hacker forum
           </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -339,14 +339,13 @@ export default function App() {
                       <MoreVertIcon />
                     </IconButton>
                   }
-                  title="Shrimp and Chorizo Paella"
+                  title="Hacker Meeting "
                   subheader="September 14, 2016"
                 />
 
                 <CardContent>
                   <Typography variant="body2" color="textSecondary" component="p">
-                    This impressive paella is a perfect party dish and a fun meal to cook together with your
-                    guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                    Please bring your main frames
               </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -409,14 +408,13 @@ export default function App() {
                       <MoreVertIcon />
                     </IconButton>
                   }
-                  title="Shrimp and Chorizo Paella"
-                  subheader="September 14, 2016"
+                  title="Vaxocentrism lecture at Library"
+                  subheader="September 15, 1966"
                 />
 
                 <CardContent>
                   <Typography variant="body2" color="textSecondary" component="p">
-                    This impressive paella is a perfect party dish and a fun meal to cook together with your
-                    guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                    got memory leaks? you'll love this talk
             </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -479,14 +477,13 @@ export default function App() {
                       <MoreVertIcon />
                     </IconButton>
                   }
-                  title="Shrimp and Chorizo Paella"
-                  subheader="September 14, 2016"
+                  title="Hello World!"
+                  subheader="September 16, 1966"
                 />
 
                 <CardContent>
                   <Typography variant="body2" color="textSecondary" component="p">
-                    This impressive paella is a perfect party dish and a fun meal to cook together with your
-                    guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                  Samizdat your jargon file via crowdStore
           </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -548,12 +545,13 @@ export default function App() {
                         <div>{index + 1}. {(user.name).substring(0, 42 - 35)}{index === 3 ? '...😁' : null} :</div>
                       </Grid>
                       <Grid item xs={6}>
-                        <div>{user.coins} FIL💰</div>
+                        <div>{user.coins} SEED💰</div>
                       </Grid>
                     </>
                   )}
                 </Grid>
               </Paper>
+              <Button variant="contained" color="secondary" style={{ marginTop: '1rem', textAlign: 'center' }} target="_blank" href='http://localhost:3002'>Click here to learn how to earn SEEDs!</Button>
             </Grid>
 
 

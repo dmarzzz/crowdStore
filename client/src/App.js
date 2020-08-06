@@ -382,7 +382,7 @@ export default function App() {
                 return <div>
                     <Card  className={classes.InnerCard}>
                         <h4> Make Storage Deal </h4>
-                        <div >
+                        <div style={{color:'black'}}>
                             <CreateFilecoinStorageDeal onSubmit={handleSubmit} />
                         </div>
                         {dealStatus === 2 ? <h4> ✅ Nice Deal Made!</h4> : <div></div>}
@@ -392,7 +392,7 @@ export default function App() {
                 return <div>
                     <Card className={classes.InnerCard}>
                         <h4> Verify your transaction by checking txHash on etherscan </h4>
-                        <h4> txHash : {txHash}</h4>
+                        <h4> txHash : <span style={{color:'orange'}}> {txHash} </span> </h4>
                     </Card>
                 </div>
             default:
