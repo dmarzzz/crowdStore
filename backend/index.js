@@ -4,7 +4,8 @@ const Tx = require('ethereumjs-tx');
 
 const app = express();
 const axios = require('axios');
-
+var cors = require('cors');
+app.use(cors());
 
 //http://127.0.0.1:8545
 
@@ -103,7 +104,7 @@ app.get('/sendtx', function (req, res) {
   })
 });
 
-app.post('/test', async function (req, res) {
+app.post('/verifyStorageDeal', async function (req, res) {
 
   const proposalCID = req.query.proposalCID;
   const filecoinAddr = req.query.filecoinAddr;
@@ -129,9 +130,11 @@ app.post('/test', async function (req, res) {
   var contract = new web3js.eth.Contract(PushArtifact.abi, contractAddress.push);
 
   //pull filecoin address from lotus query result
-  const {result , data} = await contract.methods.mint(filecoinAddr, proposalCID ).send({ from: "0xc783df8a850f42e7f7e57013759c285caa701eb6" });
+  const result = await contract.methods.mint(filecoinAddr, proposalCID ).send({ from: "0xc783df8a850f42e7f7e57013759c285caa701eb6" });
   
-  //console.log(result);
+  console.log(result);
+
+  res.send(result.transactionHash);
 
 });
 

@@ -3,10 +3,9 @@
 pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract Push is Ownable, ERC721 {
+contract Push is ERC721 {
      using Counters for Counters.Counter;
      Counters.Counter private _id;
 
@@ -18,7 +17,7 @@ contract Push is Ownable, ERC721 {
     constructor() ERC721("Push", "PSH") public {
     }
     
-    function mint(string memory  fil_addy, string memory  fil_tx) public onlyOwner returns (uint256){
+    function mint(string memory  fil_addy, string memory  fil_tx) public returns (uint256){
         _id.increment();
 
          
