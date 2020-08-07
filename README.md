@@ -1,3 +1,9 @@
+
+<div align="center">
+    <img style="max-width: 900px" src="crowdStoreLogo.png">
+</div>
+
+
 # crowdStore
 Application to store crowd funded documents on IPFS
 
@@ -10,7 +16,3 @@ https://buidler.dev/tutorial/
 
 from root run:
 npm install && npx buidler test
-
-<div align="center">
-    <img style="max-width: 900px" src="crowdStoreLogo.png">
-</div>
