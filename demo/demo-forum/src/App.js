@@ -106,7 +106,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 var web3 = new Web3('http://127.0.0.1:8545');
-// var accounts = await web3.eth.getAccounts();
 var contract = new web3.eth.Contract(PushArtifact.abi, contractAddress.push);
 
 var pollDataInterval;
@@ -134,8 +133,12 @@ export default function App() {
   }])
 
 
+
   React.useEffect(() => {
+
+    // Starts a setInterval to poll for the user's balance on page load
     startPollingData();
+
   }, []);
 
 
@@ -143,12 +146,16 @@ export default function App() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  // Starts a setInterval to poll for the user's balance on page load
   function startPollingData() {
     pollDataInterval = setInterval(() => updateBalance(), 6000)
+
+    //Runs once so we don't have to wait 6 seconds when page first loads
     updateBalance();
   }
 
 
+  //Updates the user's balance on the leaderboard, adds the user if they're not on the leaderboard
   async function updateBalance() {
     var accounts = await web3.eth.getAccounts();
     console.log(accounts);
@@ -170,8 +177,6 @@ export default function App() {
       setUserList([...newList]);
 
     }
-    console.log(results);
-    console.log(userList);
   }
 
   const handleExpandClick = () => {
@@ -253,7 +258,7 @@ export default function App() {
 
   return (
     <div style={{
-      backgroundColor: '#11BAA7',height:'100vmin'
+      backgroundColor: '#11BAA7', height: '100vmin'
     }}>
       <div className={classes.grow}>
         <AppBar position="static" style={{ background: "#080808", color: 'white' }}>
@@ -483,7 +488,7 @@ export default function App() {
 
                 <CardContent>
                   <Typography variant="body2" color="textSecondary" component="p">
-                  Samizdat your jargon file via crowdStore
+                    Samizdat your jargon file via crowdStore
           </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
