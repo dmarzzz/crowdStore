@@ -26,7 +26,7 @@ npx buidler buidler node
 
 demo , seedPage :
 
-cd crowdStore/x //x=demo || x-seedPage
+cd crowdStore/x //where x=demo || x-seedPage
 npm install
 npm start
 
