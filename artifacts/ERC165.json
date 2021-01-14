@@ -2,6 +2,11 @@
   "contractName": "ERC165",
   "abi": [
     {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
       "inputs": [
         {
           "internalType": "bytes4",
